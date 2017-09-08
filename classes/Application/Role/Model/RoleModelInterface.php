@@ -78,4 +78,10 @@ interface RoleModelInterface extends ReadOnlyDbTableModelInterface{
      */
     public function isDescendantOf(RoleModel $role);
     
+    /**
+     * 
+     * @return boolean
+     */
+    public function isAbstract();
+    
 }

@@ -56,9 +56,15 @@ class RoleModel extends ReadOnlyDbTableModel implements RoleModelInterface{
      */
     protected $updated_at;
     
-    protected $fields = ['id', 'alias', 'description', 'parent_role_id', 'created_at', 'updated_at'];
+    /**
+     *
+     * @var integer
+     */
+    protected $abstract;
     
-    protected $immutableFields = ['id', 'alias', 'parent_role_id'];
+    protected $fields = ['id', 'alias', 'description', 'parent_role_id', 'created_at', 'updated_at', 'abstract'];
+    
+    protected $immutableFields = ['id', 'alias', 'parent_role_id', 'abstract'];
     
     /**
      *
@@ -124,11 +130,14 @@ class RoleModel extends ReadOnlyDbTableModel implements RoleModelInterface{
     }
     
     /**
-     * 
+     * @param $excludeAbstract boolean default FALSE
      * @return \Zend\Db\ResultSet\ResultSetInterface of \KtogiasZendLib\Application\Role\Model\RoleModel
      */
-    public function getAllRoles() {
+    public function getAllRoles($excludeAbstract = FALSE) {
         $select = $this->table->getTableGateway()->getSql()->select();
+        if ($excludeAbstract){
+            $select->where->equalTo('abstract', 0);
+        }
         $select->order('description ASC');
         return $this->table->fetchAll($select);
     }
@@ -184,6 +193,14 @@ class RoleModel extends ReadOnlyDbTableModel implements RoleModelInterface{
             }
         }
         return false;
+    }
+    
+    /**
+     * 
+     * @return boolean
+     */
+    public function isAbstract(){
+        return $this->abstract == 1;
     }
 
 }
