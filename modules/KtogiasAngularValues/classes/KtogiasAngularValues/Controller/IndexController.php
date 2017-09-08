@@ -21,6 +21,13 @@ use KtogiasZendLib\Mvc\Controller\AngularJsControllerInterface;
 class IndexController extends Controller implements AngularJsControllerInterface{
     
     public function indexAction(){
+        $config = $this->serviceLocator->get('config');
+        if (!empty($config['ktogias-login']['min-allowed-password-score'])){
+            $minAllowedPasswordScore = $config['ktogias-login']['min-allowed-password-score'];
+        }
+        else {
+            $minAllowedPasswordScore = 0;
+        }
         return [
             'templates' => [
                 'values/value.phtml' => 'value.phtml',
@@ -37,7 +44,10 @@ class IndexController extends Controller implements AngularJsControllerInterface
                 'values/edit-email.phtml' => 'edit-email.phtml',
                 'values/display-text.phtml' => 'display-text.phtml',
                 'values/display-file.phtml' => 'display-file.phtml',
-            ]
+            ],
+            'config' => [
+                'min-allowed-password-score' => $minAllowedPasswordScore,
+            ],
         ];
     }
     

@@ -92,7 +92,8 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
             buttonClass: '@',
             uiSelectTagging: '=',
             uiSelectLimit: '@',
-            editFileTypeDescription: '@'
+            editFileTypeDescription: '@',
+            editMinAllowedPasswordScore: '@'
         },
         templateUrl: 'values/value.phtml',
         replace: true,
@@ -302,12 +303,25 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
                         }
                     });
                 }
-                 if ($scope.valueType === 'file'){
+                if ($scope.valueType === 'file'){
                     $scope.$watch('valueCtrl.editvalue', function(newValue){
                         if (typeof newValue === 'string'){
                             if (controller.editValueForm){
                                 controller.editValueForm.$setPristine();
                             }
+                        }
+                    });
+                }
+                if ($scope.valueType === 'password'){
+                    $scope.$watch('valueCtrl.editvalue', function(newValue){
+                        if (controller.editvalue && controller.editValueForm && controller.editControlName){
+                            controller.checkPaswordStrength(newValue, function(){
+                                controller.editValueForm[controller.editControlName].$setValidity('passwordStrength', true);
+                            }, function(passwordStrengthWarning, passwordStrengthSuggestions){
+                                controller.editValueForm[controller.editControlName].$setValidity('passwordStrength', false);
+                                $scope.passwordStrengthWarning = passwordStrengthWarning;
+                                $scope.passwordStrengthSuggestions = passwordStrengthSuggestions;
+                            });
                         }
                     });
                 }
@@ -417,6 +431,79 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
                 
                 controller.isDuplicateFile = function(file){
                     return false;
+                };
+                
+                controller.checkPaswordStrength = function(password, onPass, onFail){
+                    var suggestions = {
+                        'Use a few words, avoid common phrases': 'Χρησιμοποιήστε μερικές λέξεις. Αποφύγετε συνήθεις εκφράσεις.',
+                        'No need for symbols, digits, or uppercase letters': 'Δεν είναι απαραίτητο να χρησιμοποιήσετε σύμβολα, ψηφία ή κεφαλαία γράμματα',
+                        'Add another word or two. Uncommon words are better.': 'Προσθέστε ακόμα μία ή δύο λέξεις. Οι σπάνιες λέξεις είναι καλύτερες.',
+                        'Use a longer keyboard pattern with more turns': 'Χρησιμοποιήστε ένα μεγαλύτερο μοτίβο πλήκτρων με περισσότερες στροφές.',
+                        'Avoid repeated words and characters': 'Αποφύγετε την επανάληψη λέξεων ή χαρακτήρων.',
+                        'Avoid sequences': 'Αποφύγετε τις ακολουθίες χαρακτήρων.',
+                        'Avoid recent years': 'Αποφύγετε πρόσφατες χρονολογίες.',
+                        'Avoid years that are associated with you': 'Αποφύγετε χρονολογίες που σχετίζονται σε εσάς.',
+                        'Avoid dates and years that are associated with you': 'Αποφύγετε ημερομηνίες ή χρονολογίες που σχετίζονται με εσάς.',
+                        'Capitalization doesn\'t help very much': 'Η χρήση κεφαλαίων για το πρώτο γράμμα δεν βοηθάει ιδιαίτερα.',
+                        'All-uppercase is almost as easy to guess as all-lowercase': 'Είναι το ίδιο εύκολο να μαντέψει κάποιος μια λέξη με όλα τα γραμματα κεφαλαία όσο και με μικρά.',
+                        'Reversed words aren\'t much harder to guess' : 'Δεν είναι δυσκολότερο να μαντέψει κάποιος ανεστραμμένες λέξεις.',
+                        'Predictable substitutions like "@" instead of "a" don\'t help very much' : 'Προβλέψιμες αντικαταστάσεις όπως "@" αντί για "a" δεν βοηθάνε ιδιαίτερα.'
+                    };
+                    var warnings = {
+                        'Straight rows of keys are easy to guess': 'Είναι εύκολο να μαντέψει κάποιος ευθείες σειρές από διαδοχικά πλήκτρα.',
+                        'Short keyboard patterns are easy to guess': 'Είναι εύκολο να μαντέψει κάποιος μικρού μήκους μοτίβα πλήκτρων.',
+                        'Repeats like "aaa" are easy to guess': 'Είναι εύκολο να μαντέψει κάποιος επαναλήψεις όπως "aaa".',
+                        'Repeats like "abcabcabc" are only slightly harder to guess than "abc"': 'Είναι ελάχιστα πιο δύσκολο να μαντέψει κάποιος επαναλήψεις του τύπου "abcabcabc" από ότι αυτες του τύπου "abc".',
+                        'Sequences like abc or 6543 are easy to guess': 'Είναι εύκολο να μαντέψει κάποιος ακολουθίες χαρακτήρων όπως "abc" ή "6543".',
+                        'Recent years are easy to guess': 'Είναι εύκολο να μαντέψει κάποιος πρόσφατες χρονολογίες.',
+                        'Dates are often easy to guess': 'Είναι συνήθως εύκολο να μαντέψει κάποιος ημερομηνίες.',
+                        'This is a top-10 common password': 'Αυτός είναι ένας από τους 10 πιο συνηθισμένους κωδικούς.',
+                        'This is a top-100 common password': 'Αυτός είναι ένας από τους 100 πιο συνηθισμένους κωδικούς.',
+                        'This is a very common password': 'Αυτός είναι ένας πολύ συνηθισμένους κωδικός.',
+                        'This is similar to a commonly used password': 'Αυτός ο κωδικός μοιάζει πολύ με έναν συνηθισμένο κωδικό.',
+                        'A word by itself is easy to guess': 'Είναι εύκολο να μαντέψει κάποιο μια μόνο λέξη.',
+                        'Names and surnames by themselves are easy to guess': 'Είναι εύκολο να μαντέψει κανείς μόνο ονόματα ή επώνυμα.',
+                        'Common names and surnames are easy to guess': 'Είναι εύκολο να μαντέψει κανείς συνηθισμένα ονόματα και επώνυμα.'
+                    };
+
+                    var result = zxcvbn(password);
+                    var passwordStrengthSuggestions = [];
+                    var passwordStrengthWarning = '';
+                    var pass = false; 
+                    var minAllowedPasswordScore;
+                    if ($scope.editMinAllowedPasswordScore){
+                        minAllowedPasswordScore = $scope.editMinAllowedPasswordScore;
+                    }
+                    else {
+                        minAllowedPasswordScore = serverVars.config['min-allowed-password-score'];
+                    }
+                    if (result.score >= minAllowedPasswordScore){
+                        pass = true;
+                    }
+                    else {
+                        pass = false;
+                        if (result.feedback.warning in warnings){
+                            passwordStrengthWarning = warnings[result.feedback.warning];
+                        }
+                        else {
+                            passwordStrengthWarning = result.feedback.warning;
+                        }
+                        for (var i in result.feedback.suggestions){
+                            if (result.feedback.suggestions[i] in suggestions 
+                                    && passwordStrengthSuggestions.indexOf(suggestions[result.feedback.suggestions[i]]) === -1){
+                                passwordStrengthSuggestions.push(suggestions[result.feedback.suggestions[i]]);
+                            }
+                            else if (passwordStrengthSuggestions.indexOf(result.feedback.suggestions[i]) === -1){
+                                passwordStrengthSuggestions.push(result.feedback.suggestions[i]);
+                            }
+                        }
+                    }
+                    if (pass && typeof onPass === 'function'){
+                        onPass();
+                    }
+                    else if (!pass && typeof onFail === 'function'){
+                        onFail(passwordStrengthWarning, passwordStrengthSuggestions);
+                    }
                 };
                 
                 $scope.$on('$includeContentLoaded',function(event, src){
