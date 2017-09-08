@@ -1,0 +1,74 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<div class="control-group form-group value-group {{groupClass}}" ng-class="{'inline': inline}">
+        <label ng-hide="hideLabel" class="{{labelClass}}">{{label | translate}}</label>
+        <div class="value {{valueClass}}" ng-class="{editable:(editable === 'true'), 'animate-show':(editable === 'true'), 'pending-edit': pendingEdit}" style="{{valueCtrl.val.style}}" ng-hide="valueCtrl.edit">
+            <span class="value-content" ng-class="{'pending-edit': pendingEdit }">
+                <span ng-if="valueType !== 'file'" ng-include="'values/display-text.phtml'"></span>
+                <span ng-if="valueType === 'file'" ng-include="'values/display-file.phtml'"></span>
+            </span>
+            
+            <span ng-if="pendingEdit" 
+               class="pending-edit-icon glyphicon glyphicon-info-sign" 
+               role="button"
+               uib-popover-template="'values/pending-edit.phtml'"
+               popover-title="{{'Εκκρεμεί τροποποίηση' | translate}}"
+               popover-placement="bottom-left"
+               popover-trigger="outsideClick"
+            ></span>
+            
+            <span ng-if="editable === 'true'" 
+                class="edit-button glyphicon glyphicon-edit animate-show animate-hide" 
+                aria-hidden="true" 
+                ng-click="valueCtrl.edit = true;"></span>
+            
+            <span 
+                ng-show="valueCtrl.editSuccess" 
+                class="edit-success glyphicon glyphicon glyphicon-ok-sign animate-show animate-hide" 
+                aria-hidden="true"></span>
+            
+        </div>
+        <form ng-if="editable === 'true' && !editForm" ng-show="valueCtrl.edit"
+            role="form" 
+            name="editValueForm" 
+            class="value-edit-form form-inline animate-show {{valueClass}}"
+        >
+            <div ng-if="!valueType || valueType === 'text'" ng-include="'values/edit-text.phtml'"></div>
+            <div ng-if="valueType === 'long-text'" ng-include="'values/edit-long-text.phtml'"></div>
+            <div ng-if="valueType === 'date'" ng-include="'values/edit-date.phtml'"></div>
+            <div ng-if="valueType === 'file'" ng-include="'values/edit-file.phtml'"></div>
+            <div ng-if="valueType === 'map'" ng-include="'values/edit-map.phtml'"></div>
+            <div ng-if="valueType === 'ui-select-map'" ng-include="'values/edit-ui-select-map.phtml'"></div>
+            <div ng-if="valueType === 'ui-select-multiple-map'" ng-include="'values/edit-ui-select-multiple-map.phtml'"></div>
+            <div ng-if="valueType === 'email'" ng-include="'values/edit-email.phtml'"></div>
+            <div ng-if="valueType === 'password'" ng-include="'values/edit-password.phtml'"></div>
+            
+            <span ng-if="moderated === 'true'" class="help-block info">
+                <span class="glyphicon glyphicon-info-sign"></span> {{'Η τροποποίηση θα εφαρμοστεί μόνο μετά από έλεγχο και έγκριση από το αρμόδιο τμήμα.' | translate}}
+            </span>
+            <div ng-show="valueCtrl.saving" class="saving-spinner">
+                <div class="spinner-inner"><img src="/img/loader.gif" alt="saving..."/> {{'Αποθήκευση...' | translate}}</div>
+                
+            </div>
+        </form>
+        <div ng-if="editable === 'true' && editForm" ng-show="valueCtrl.edit" class="{{valueClass}}">
+            <div ng-if="!valueType || valueType === 'text'" ng-include="'values/edit-text.phtml'"></div>
+            <div ng-if="valueType === 'password'" ng-include="'values/edit-password.phtml'"></div>
+            <div ng-if="valueType === 'long-text'" ng-include="'values/edit-long-text.phtml'"></div>
+            <div ng-if="valueType === 'date'" ng-include="'values/edit-date.phtml'"></div>
+            <div ng-if="valueType === 'file'" ng-include="'values/edit-file.phtml'"></div>
+            <div ng-if="valueType === 'map'" ng-include="'values/edit-map.phtml'"></div>
+            <div ng-if="valueType === 'ui-select-map'" ng-include="'values/edit-ui-select-map.phtml'"></div>
+            <div ng-if="valueType === 'ui-select-multiple-map'" ng-include="'values/edit-ui-select-multiple-map.phtml'"></div>
+            <div ng-if="valueType === 'email'" ng-include="'values/edit-email.phtml'"></div>
+        </div>
+        
+</div>
+

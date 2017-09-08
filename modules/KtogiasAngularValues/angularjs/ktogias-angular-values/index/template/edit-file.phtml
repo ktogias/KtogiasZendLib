@@ -1,0 +1,70 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<div>
+    <div class="form-group" ng-class="{error: valueCtrl.editValueForm[valueCtrl.editControlName].$invalid && !valueCtrl.editValueForm[valueCtrl.editControlName].$pristine}">
+        <div
+            ng-attr-name="{{valueCtrl.editControlName}}"
+            ng-show="!valueCtrl.editvalue"
+            ngf-select="valueCtrl.uploadFile($file)"
+            ngf-drop="valueCtrl.uploadFile($file)"
+            ng-required="editRequired"
+            ng-model="valueCtrl.file" 
+            ngf-model-invalid="file_invalid" 
+            ngf-pattern="{{editFilePattern}}" 
+            ngf-accept="{{editFileAccept}}" 
+            ngf-max-size="{{editFileMaxSize}}"
+            class="form-control drop-box {{controlClass}}" 
+            ngf-drop-available="fileDropAvailable">
+            <span class="hint" ng-show="!valueCtrl.editValueForm[valueCtrl.editControlName].progress && !valueCtrl.file">{{'Επιλέξτε' | translate}}
+            <span ng-show="fileDropAvailable"> {{'ή σύρετε' | translate}}</span>
+                {{'το σκαναρισμένο έγγραφο'| translate}} ({{editFileTypeDescription?editFileTypeDescription:'αρχείο pdf' | translate}} {{'μέγιστο'| translate}} {{editFileMaxSize}})
+                </span>
+            <div class="file-progress" ng-show="valueCtrl.editValueForm[valueCtrl.editControlName].progress" ng-style="{width: valueCtrl.editValueForm[valueCtrl.editControlName].progress_width+'px'}">
+                {{valueCtrl.editValueForm[valueCtrl.editControlName].progress}}%
+            </div>
+        </div>
+        <div 
+            class="file-uploaded form-control drop-box ng-dirty ng-valid {{controlClass}}" 
+            ng-show="valueCtrl.editvalue && valueCtrl.fileUploaded">
+            <a href="{{valueCtrl.editvalue.value}}" target="{{valueCtrl.val.target}}">{{valueCtrl.editvalue.label}}</a>
+            <span class="remove-file" ng-click="valueCtrl.removeFile()" tile="{{'Αφαίρεση αρχείου' | translate}}"><span class="glyphicon glyphicon glyphicon-remove-circle" aria-hidden="true"></span></span>
+        </div>
+        <div 
+            class="file-uploaded form-control drop-box ng-dirty ng-valid {{controlClass}}"
+            ng-show="valueCtrl.editvalue && !valueCtrl.fileUploaded">
+            <span ng-include="'values/display-file.phtml'"></span>
+            <span class="remove-file" ng-click="valueCtrl.removeFile()" tile="{{'Αφαίρεση αρχείου' | translate}}"><span class="glyphicon glyphicon glyphicon-remove-circle" aria-hidden="true"></span></span>
+        </div>
+        <div class="file-uploaded form-control drop-box ng-dirty ng-invalid {{controlClass}}"
+                 ng-show="valueCtrl.editValueForm[valueCtrl.editControlName].$error.duplicate && !valueCtrl.editValueForm[valueCtrl.editControlName].$pristine">
+            <span class="error" style="color: red;">{{valueCtrl.editvalue.name}}</span>
+            <span class="remove-file" ng-click="controller.removeFile()" tile="Αφαίρεση αρχείου"><span class="glyphicon glyphicon glyphicon-remove-circle" aria-hidden="true"></span></span>
+        </div>
+    </div>
+    
+    <span ng-if="!editForm" ng-include="'values/edit-buttons.phtml'"></span>
+    
+    <span ng-show="valueCtrl.editValueForm[valueCtrl.editControlName].$error.required && !valueCtrl.editValueForm[valueCtrl.editControlName].$error.maxSize && !valueCtrl.editValueForm[valueCtrl.editControlName].$error.upload && !valueCtrl.editValueForm[valueCtrl.editControlName].$error.pattern && !valueCtrl.editValueForm[valueCtrl.editControlName].$pristine" class="help-block error">
+        {{'Επιλέξτε ένα αρχείο.' | translate}}
+    </span>
+    <span ng-show="valueCtrl.editValueForm[valueCtrl.editControlName].$error.maxSize && !valueCtrl.editValueForm[valueCtrl.editControlName].$pristine" class="help-block error">
+        {{'Το αρχείο είναι πολύ μεγάλο' | translate}} ({{'μέγιστο' | translate}} {{editFileMaxSize}}).
+    </span>
+    <span ng-show="valueCtrl.editValueForm[valueCtrl.editControlName].$error.pattern && !valueCtrl.editValueForm[valueCtrl.editControlName].$pristine" class="help-block error">
+        {{'Μη επιτρεπόμενος τύπος αρχείου.' | translate}} 
+    </span>
+    <span ng-show="valueCtrl.editValueForm[valueCtrl.editControlName].$error.upload && !valueCtrl.editValueForm[valueCtrl.editControlName].$pristine" class="help-block error">
+        {{'Σφάλμα κατά τη μεταφόρτωση του αρχείου.' | translate}} {{'Παρακαλούμε προσπαθήστε ξανά.' | translate}} 
+    </span>
+    <span ng-show="valueCtrl.editValueForm[valueCtrl.editControlName].$error.duplicate && !valueCtrl.editValueForm[valueCtrl.editControlName].$pristine" class="help-block error">
+        {{'Έχετε ήδη προσθέσει αυτό το αρχείο σε ένα άλλο πεδίο.' | translate}} 
+    </span>
+</div>
+

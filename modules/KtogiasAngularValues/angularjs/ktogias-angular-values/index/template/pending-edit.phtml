@@ -1,0 +1,40 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<div>
+    <value label="{{'Νέα τιμή' | translate}}" 
+           value-type="{{valueType}}" 
+           values-map="valuesMap" 
+           date-format="{{dateFormat}}" 
+           file-target="{{fileTarget}}" 
+           value="{{pendingEdit.value}}"></value>
+    
+    <value label="{{'Υποβλήθηκε από' | translate}}" 
+               value="{{pendingEdit.creator.username}} ({{pendingEdit.creator.firstname}} {{pendingEdit.creator.lastname}})"></value>
+     
+    <value label="{{'Ημερομηνία και ώρα υποβολής' | translate}}" 
+               value="{{pendingEdit.created_at}}"
+               value-type="date"
+               date-format="dd/MM/yyyy HH:mm:ss"></value>  
+    
+    <value label="{{'Κατάσταση' | translate}}" 
+               value="{{pendingEdit.status.label | translate}}"
+               capitalize-first-letter="true"></value>
+    
+    <div class="pending-edit-note media">
+        <div class="media-left media-top">
+            <span class="glyphicon glyphicon-info-sign"></span>
+        </div>
+        <div class="media-body">
+            {{'Οι τροποποιήσεις που υποβλάλλετε παραμένουν σε κατάσταση "εκκρεμεί" εως ότου να εξεταστούν από το τμήμα προσωπικού.' | translate}}
+        </div> 
+    </div>
+        
+</div>
+

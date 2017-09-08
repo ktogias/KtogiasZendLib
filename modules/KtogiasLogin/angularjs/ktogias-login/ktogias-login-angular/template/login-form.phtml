@@ -1,0 +1,67 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<div id="login-panel" class="panel panel-default" ng-controller="ktogiasloginController as controller">
+    <div class="panel-heading">
+        {{'Σύνδεση χρήστη'|translate}} 
+        <a role="button" title="{{'Βοήθεια'| translate}}"
+            uib-popover-template="'ktogias-login/login-help.phtml'"
+            popover-title="{{'Σύνδεση χρήστη'|translate}} - {{'Βοήθεια'|translate}}"
+            popover-placement="bottom-left"
+            popover-trigger="outsideClick"
+            popover-append-to-body="true"
+            >
+            <span
+                class="glyphicon glyphicon-question-sign" 
+             ></span>
+        </a>
+    </div>
+    <div class="panel-body">
+         <form name="loginForm" role="form">
+            <div class="control-group form-group" ng-class="{error: loginForm.username.$invalid && !loginForm.username.$pristine}">
+                <label for="loginForm-username">{{'Email ή όνομα χρήστη'| translate}}</label>
+                <input class="form-control" id="applicationForm-username" type="text" name="username" 
+                       placeholder="{{'Εισάγετε το email σας ή το όνομα χρήστη (έως 100 χαρακτήρες)'|translate}}" 
+                       ng-model="controller.username"  
+                       required minlength="1" maxlength="100"/>
+                <span ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block">
+                    {{'Το πεδίο δεν πρέπει να είναι κενό.'|translate}}
+                </span>
+                <span ng-show="loginForm.username.$error.maxlength && !loginForm.username.$pristine" class="help-block">
+                    {{'Το μήκος δεν πρέπει να ξεπερνά τους 100 χαρακτήρες.'|translate}}
+                </span>
+            </div>
+             <div class="control-group form-group" ng-class="{error: loginForm.password.$invalid && !loginForm.password.$pristine}">
+                <label for="loginForm-password">{{'Κωδικός πρόσβασης'|translate}}</label>
+                <input class="form-control" id="applicationForm-password" type="password" name="password" 
+                       placeholder="{{'Εισάγετε τον κωδικό πρόσβασης (έως 100 χαρακτήρες)'|translate}}" 
+                       ng-model="controller.password"  
+                       required minlength="1" maxlength="100"/>
+                <span ng-show="loginForm.password.$error.required && !loginForm.password.$pristine" class="help-block">
+                    {{'Το πεδίο δεν πρέπει να είναι κενό.'|translate}}
+                </span>
+                <span ng-show="loginForm.password.$error.maxlength && !loginForm.password.$pristine" class="help-block">
+                    {{'Το μήκος δεν πρέπει να ξεπερνά τους 100 χαρακτήρες.'|translate}}
+                </span>
+            </div>
+            <div class="control-group form-group">
+                <button ng-click="controller.login()" 
+                        ng-disabled="loginForm.$pristine || loginForm.$invalid"
+                        class="btn btn-primary">{{'Σύνδεση'|translate}}</button>    
+                <button type='button' ng-click="controller.clear();" ng-disabled="loginForm.$pristine"
+                        class="btn btn-primary">{{'Καθαρισμός'|translate}}</button>
+            </div>
+         </form>
+    </div>
+    <!--<div class="panel-footer">
+        {{'Ξεχάσατε τον κωδικό σας; Πατήστε εδώ:'|translate}} 
+        <button ng-click="controller.goToRetrievePasswordForm()" 
+                class="btn btn-default">{{'Ανάκτηση κωδικού πρόσβασης'|translate}}</button>
+    </div>-->
+</div>

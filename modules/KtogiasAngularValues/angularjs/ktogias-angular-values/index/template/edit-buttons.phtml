@@ -1,0 +1,26 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<span>
+    <button ng-disabled="editValueForm.$pristine || editValueForm.$invalid || uploading" ng-click="valueCtrl.save()" class="btn btn-success {{buttonClass}}"><span ng-if="moderated === 'true'">{{'Υποβολή' | translate}}</span><span ng-if="moderated !== 'true'">{{'Αποθήκευση' | translate}}</span></button>
+    <button ng-click="valueCtrl.edit = false" class="btn btn-danger {{buttonClass}}">{{'Ακύρωση' | translate}}</button>
+    <span ng-show="valueCtrl.editFailure" class="edit-failure animate-show animate-hide">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> 
+        {{'Σφάλμα κατά την αποθήκευση!' | translate}}
+    </span>
+    <span ng-show="valueCtrl.editFailureMessage" class="help-block error">
+        <span ng-if="!valueCtrl.angular.isArray(valueCtrl.editFailureMessage)">{{valueCtrl.editFailureMessage | translate}}</span>
+        <span ng-if="valueCtrl.angular.isArray(valueCtrl.editFailureMessage)" ng-repeat="message in valueCtrl.editFailureMessage">
+            {{message | translate}}
+            <span ng-if="!$last"><br/></span>
+        </span>       
+    </span>
+    <span ng-show="uploading"><img src="/img/loader.gif" alt="Παρακαλούμε περιμένετε..." style="width: 20px;"/></span>
+</span>
+

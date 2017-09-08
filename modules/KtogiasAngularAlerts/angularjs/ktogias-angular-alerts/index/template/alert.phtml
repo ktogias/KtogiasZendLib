@@ -1,0 +1,17 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<div class="alert {{'alert-' + (type || 'warning')}} {{closeable ? 'alert-dismissible' : null}} animate-show animate-hide" role="alert">
+   <button ng-show="closeable" type="button" class="close" ng-click="close({$event: $event})">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span>
+    </button>
+    <div ng-transclude></div>
+</div>
+

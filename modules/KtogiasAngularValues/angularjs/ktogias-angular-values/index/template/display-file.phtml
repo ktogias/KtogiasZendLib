@@ -1,0 +1,11 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<a ng-if="valueCtrl.val.value" href="{{valueCtrl.val.value}}" target="{{valueCtrl.val.target}}">{{valueCtrl.val.label | translate}}</a>
+<span ng-if="!valueCtrl.val.value" style="color: graytext;">{{'Δεν έχει επισυναφθεί αρχείο' | translate}}</span>

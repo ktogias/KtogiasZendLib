@@ -1,0 +1,39 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<div>
+    <div class="input-group" ng-class="{'control-group': editForm, error: editForm && editControlName && editForm[editControlName].$invalid && !editForm[editControlName].$pristine}">
+        <input type="text" class="form-control {{controlClass}}" 
+               ng-attr-name="{{editControlName}}"
+               placeholder="{{editPlaceholder | translate}}"
+               uib-datepicker-popup="{{dateFormat}}" 
+               ng-model="valueCtrl.editvalue" 
+               ng-model-options="editModelOptions" 
+               is-open="datepickerOpen" 
+               datepicker-options="valueCtrl.editDateOptions" 
+               close-text="{{'Κλείσιμο' | translate}}" 
+               current-text="{{'Σήμερα' | translate}}" 
+               clear-text="{{'Καθαρισμός' | translate}}"
+               ng-required="editRequired"/>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default {{buttonClass}}" ng-click="datepickerOpen = true"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+    </div>
+    
+    <span ng-if="!editForm" ng-include="'values/edit-buttons.phtml'"></span>
+    
+    <span ng-show="(editValueForm.$error.required && !editValueForm.$pristine) || (editForm && editControlName && editForm[editControlName].$error.required && !editForm[editControlName].$pristine)" class="help-block error">
+        {{'Η ημερομηνία δεν μπορεί να είναι κενή.' | translate}}
+    </span>
+    <span ng-show="(editValueForm.$error.date && !editValueForm.$pristine) || (editForm && editControlName && editForm[editControlName].$error.date && !editForm[editControlName].$pristine)" class="help-block error">
+        {{'Λάθος ημερομηνία.' | translate}}
+    </span>
+        
+</div>
+

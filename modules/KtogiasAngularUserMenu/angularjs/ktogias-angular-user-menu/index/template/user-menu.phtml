@@ -1,0 +1,21 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<span uib-dropdown on-toggle="toggled(open)" class="user-menu">
+  <a href id="usermenu-dropdown" uib-dropdown-toggle class="menu-header">
+    {{fullname}} <b class="caret"></b>
+  </a>
+  <ul uib-dropdown-menu aria-labelledby="usermenu-dropdown" ng-class="position === 'right'?'dropdown-menu-right':''">
+    <li class="message">{{'Είστε συνδεμένος ως' | translate}} <span class="fullname">{{fullname}}</span></li>
+    <li class="divider"></li>
+    <li ng-repeat="choice in menuItems">
+      <a href="#{{choice['route']}}">{{choice.label | translate}}</a>
+    </li>
+  </ul>
+</span>

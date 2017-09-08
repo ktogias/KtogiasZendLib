@@ -1,0 +1,37 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<div>
+    <div class="form-group ui-select-map" ng-class="{'control-group': editForm, error: editForm && editControlName && editForm[editControlName].$invalid && !editForm[editControlName].$pristine}">
+        <ui-select class="form-control {{controlClass}}"
+                   ng-attr-name="{{editControlName}}"
+                   placeholder="{{editPlaceholder}}"
+                   ng-model="valueCtrl.editvalue"  
+                   ng-required="editRequired"
+                   ng-disabled="editDisabled"
+                   title="{{editPlaceholder | translate}}"
+                   sortable="true"
+                   theme="bootstrap"
+                   >
+                <ui-select-match placeholder="{{editPlaceholder | translate}}..." >{{$select.selected.value || valueCtrl.val.value}}</ui-select-match>
+                <ui-select-choices repeat="rawVal in valuesMap | filter: $select.search">
+                    <div ng-bind-html="rawVal.value | highlight: $select.search"></div>
+                </ui-select-choices>
+        </ui-select>
+    </div>
+    <span ng-if="!editForm" ng-include="'values/edit-buttons.phtml'"></span>
+    <span ng-show="(editValueForm.$error.required && !editValueForm.$pristine) || (editForm && editControlName && editForm[editControlName].$error.required && !editForm[editControlName].$pristine)" class="help-block error">
+        {{'Επιλέξτε μια τιμή.'| translate}}
+    </span>
+    <span ng-repeat="error in editCustomErrors" 
+          ng-show="(editValueForm.$error[error.name]  && !editValueForm.$pristine) || (editForm && editControlName && editForm[editControlName].$error[error.name] && !editForm[editControlName].$pristine)" class="help-block error">
+        {{error.message | translate}}
+    </span>
+</div>
+

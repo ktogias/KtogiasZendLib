@@ -1,0 +1,58 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<div>
+    <div class="form-group" ng-class="{'control-group': editForm, error: editForm && editControlName && editForm[editControlName].$invalid && !editForm[editControlName].$pristine}">
+        <input 
+            ng-if="!editMatch"
+            class="form-control {{controlClass}}" 
+            type="text" 
+            ng-attr-name="{{editControlName}}"
+            placeholder="{{editPlaceholder | translate}}"
+            ng-model="valueCtrl.editvalue" 
+            ng-pattern="valueCtrl.editPattern"
+            minlength="{{editMinlength}}" 
+            maxlength="{{editMaxlength}}"
+            ng-required="editRequired"/>
+        <input 
+            ng-if="editMatch"
+            class="form-control {{controlClass}}" 
+            type="text" 
+            ng-attr-name="{{editControlName}}"
+            placeholder="{{editPlaceholder | translate}}"
+            ng-model="valueCtrl.editvalue" 
+            ng-pattern="valueCtrl.editPattern"
+            minlength="{{editMinlength}}" 
+            maxlength="{{editMaxlength}}"
+            ng-required="editRequired"
+            match="valueCtrl.editMatch"/>
+    </div>
+    <span ng-if="!editForm" ng-include="'values/edit-buttons.phtml'"></span>
+    <span ng-show="(editValueForm.$error.required && !editValueForm.$pristine) || (editForm && editControlName && editForm[editControlName].$error.required && !editForm[editControlName].$pristine)" class="help-block error">
+        {{'Το πεδίο δεν πρέπει να είναι κενό.' | translate}}
+    </span>
+    <span ng-show="(editValueForm.$error.maxlength && !editValueForm.$pristine) || (editForm && editControlName && editForm[editControlName].$error.maxlength && !editForm[editControlName].$pristine)" class="help-block error">
+        {{'Το μήκος δεν πρέπει να ξεπερνά τους' | translate}} {{editMaxlength}} {{'χαρακτήρες.' | translate}}
+    </span>
+    <span ng-show="(editValueForm.$error.minlength && !editValueForm.$pristine) || (editForm && editControlName && editForm[editControlName].$error.minlength && !editForm[editControlName].$pristine)" class="help-block error">
+        {{'Το μήκος πρέπει να είναι τουλάχιστο' | translate}} {{editMinlength}} {{'χαρακτήρες.' | translate}}
+    </span>
+    <span ng-show="(editValueForm.$error.pattern  && !editValueForm.$pristine) || (editForm && editControlName && editForm[editControlName].$error.pattern && !editForm[editControlName].$pristine)" class="help-block error">
+        {{'Μη επιτρεπόμενη ακολουθία χαρακτήρων.' | translate}}
+    </span>
+    <span ng-show="(editValueForm.$error.match  && !editValueForm.$pristine) || (editForm && editControlName && editForm[editControlName].$error.match && !editForm[editControlName].$pristine)" class="help-block error">
+        {{'Οι τιμές δεν είναι ίδιες.' | translate}}
+    </span>
+    <span ng-repeat="error in editCustomErrors" 
+          ng-show="(editValueForm.$error[error.name]  && !editValueForm.$pristine) || (editForm && editControlName && editForm[editControlName].$error[error.name] && !editForm[editControlName].$pristine)" class="help-block error">
+        {{error.message | translate}}
+    </span>
+    
+</div>
+

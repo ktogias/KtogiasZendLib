@@ -1,0 +1,90 @@
+<!--
+/**
+ * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
+ *
+ * @link      https://github.com/ktogias/KtogiasZendLib for the canonical source repository
+ * @copyright Copyright (c) Konstantinos Togias (https://ktogias.gr)
+ * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
+ */
+-->
+<div id="login-panel" class="panel panel-default" ng-controller="ktogiasactivateaccountController as controller" ng-show="!controller.error">
+    <div class="panel-heading">
+        {{'Ενεργοποίηση λογαριασμού' | translate}}
+    </div>
+    <div class="panel-body">
+        <div ng-hide="controller.success">
+            <p>
+                {{'Παρακαλούμε εισάγετε έναν κωδικό εισόδου και πατήστε αποθήκευση για να συνεχίσετε.' | translate}}
+            </p>
+             <form name="activateForm" role="form">
+                <div class="control-group form-group">
+                    <label>{{'Ονοματεπώνυμο' | translate}}</label>
+                    <div>
+                        {{controller.user.fullname}}
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <label>{{'Όνομα χρήστη' | translate}}</label>
+                    <div>
+                        {{controller.user.username}}
+                    </div>
+                </div>
+                <div class="control-group form-group" ng-class="{error: activateForm.password.$invalid && !activateForm.password.$pristine}">
+                    <label for="activateForm-password">{{'Κωδικός εισόδου' | translate}}</label>
+                    <input class="form-control" id="activateForm-password" type="password" name="password" 
+                           placeholder="{{'Εισάγετε τον κωδικό εισόδου (έως 100 χαρακτήρες)' | translate}}" 
+                           ng-model="controller.password" 
+                           required minlength="1" maxlength="100"/>
+                    <span ng-show="activateForm.password.$error.required && !activateForm.password.$pristine" class="help-block">
+                        {{'Το πεδίο δεν πρέπει να είναι κενό.' | translate}}
+                    </span>
+                    <span ng-show="activateForm.password.$error.maxlength && !activateForm.password.$pristine" class="help-block">
+                        {{'Το μήκος δεν πρέπει να ξεπερνά τους 100 χαρακτήρες.' | translate}}
+                    </span>
+                    <span ng-show="activateForm.password.$error.passwordStrength && !activateForm.password.$pristine" class="help-block">
+                        {{'Ο κωδικός είναι αδύναμος.' | translate}}
+                        <span ng-if="controller.passwordStrengthWarning"><br/>{{controller.passwordStrengthWarning | translate}}</span>
+                        
+                    </span>
+                    <span ng-show="activateForm.password.$error.passwordStrength && !activateForm.password.$pristine" class="help-block">
+                        <span ng-if="controller.passwordStrengthSuggestions">
+                            <span style="color: darkblue" ng-repeat="suggestion in controller.passwordStrengthSuggestions"><br ng-if="$index > 0"/>{{suggestion | translate}}</span>
+                        </span>
+                    </span>
+                    
+                </div>
+                 <div class="control-group form-group" ng-class="{error: activateForm.passwordRepeat.$invalid && !activateForm.passwordRepeat.$pristine}">
+                    <label for="activateForm-passwordRepeat">{{'Επαλήθευση κωδικού εισόδου' | translate}}</label>
+                    <input class="form-control" id="activateForm-passwordRepeat" type="password" name="passwordRepeat" 
+                           placeholder="{{'Εισάγετε ξανά τον κωδικό εισόδου (έως 100 χαρακτήρες)' | translate}}" 
+                           ng-model="controller.passwordRepeat"  
+                           match="controller.password"
+                           required minlength="1" maxlength="100"/>
+                    <span ng-show="activateForm.passwordRepeat.$error.required && !activateForm.passwordRepeat.$pristine" class="help-block">
+                        {{'Το πεδίο δεν πρέπει να είναι κενό.' | translate}}
+                    </span>
+                    <span ng-show="activateForm.passwordRepeat.$error.maxlength && !activateForm.passwordRepeat.$pristine" class="help-block">
+                        {{'Το μήκος δεν πρέπει να ξεπερνά τους 100 χαρακτήρες.' | translate}}
+                    </span>
+                    <span ng-show="activateForm.passwordRepeat.$error.match && !activateForm.passwordRepeat.$pristine && !activateForm.password.$pristine" class="help-block">
+                        {{'Οι κωδικοί δεν είναι ίδιοι.' | translate}}
+                    </span>
+                </div>
+                <div class="control-group form-group">
+                    <button ng-click="controller.activateAccount()" 
+                            ng-disabled="activateForm.$pristine || activateForm.$invalid"
+                            class="btn btn-primary">{{'Αποθήκευση' | translate}}</button>    
+                    <button type='button' ng-click="controller.clear();" ng-disabled="activateForm.$pristine"
+                            class="btn btn-primary">{{'Καθαρισμός' | translate}}</button>
+                </div>
+             </form>
+        </div>
+        <div ng-show="controller.success">
+            <p ng-repeat="message in controller.successMessages">{{message | translate}}</p>
+            <p style="text-align: center;">
+                <button ng-click="controller.goToLoginForm()" 
+                            class="btn btn-primary">{{'Πατήστε εδώ για να συνδεθείτε' | translate}}</button>
+            </p>
+        </div>
+    </div>
+</div>
