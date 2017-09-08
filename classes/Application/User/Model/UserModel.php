@@ -649,5 +649,18 @@ class UserModel extends ReadOnlyDbTableModel implements UserModelInterface{
         $this->exchangeArray($modelObject->getArrayCopy());
         return $this;
     }
+    
+    /**
+     * 
+     * @param String $username
+     * @return \KtogiasLogin\Model\UserModelInterface
+     */
+    public function loadByUsername($username){
+        $select = $this->table->getTableGateway()->getSql()->select();
+        $select->where->equalTo('username', $username);
+        $modelObject = $this->table->fetchOne($select, true, true);
+        $this->exchangeArray($modelObject->getArrayCopy());
+        return $this;
+    }
 
 }

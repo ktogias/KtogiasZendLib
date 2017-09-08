@@ -210,4 +210,11 @@ interface UserModelInterface extends ReadOnlyDbTableModelInterface, LoggingAware
      */
     public function loadByEmail($email);
     
+     /**
+     * 
+     * @param String $username
+     * @return \KtogiasLogin\Model\UserModelInterface
+     */
+    public function loadByUsername($username);
+    
 }
