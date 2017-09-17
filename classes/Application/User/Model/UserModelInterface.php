@@ -112,13 +112,14 @@ interface UserModelInterface extends ReadOnlyDbTableModelInterface, LoggingAware
      * @param string $email
      * @param string $firstname
      * @param string $lastname
+     * @param boolean $skipEmailValidation default false
      * @return $this
      * @throws \KtogiasZendLib\Application\User\Model\Exception\InvalidEmailException
      * @throws \KtogiasZendLib\Application\User\Model\Exception\InvalidUsernameException
      * @throws \KtogiasZendLib\Application\User\Model\Exception\InvalidFirstnameException
      * @throws \KtogiasZendLib\Application\User\Model\Exception\InvalidLastnameException
      */
-    public function create($username, $email, $firstname, $lastname);
+    public function create($username, $email, $firstname, $lastname, $skipEmailValidation);
     
     /**
      * 
@@ -216,5 +217,31 @@ interface UserModelInterface extends ReadOnlyDbTableModelInterface, LoggingAware
      * @return \KtogiasLogin\Model\UserModelInterface
      */
     public function loadByUsername($username);
+    
+    /**
+     * 
+     * @param string $password
+     * @param string $salt
+     * @param integer $iterations
+     * @param integer $size
+     * @return string
+     */
+    public function getKey($password, $salt, $iterations, $size);
+    
+    /**
+     * 
+     * @param string $data
+     * @return string
+     * @throws Exception\EmptyKeyException
+     */
+    public function encrypt($data);
+    
+    /**
+     * 
+     * @param string $data
+     * @return string
+     * @throws Exception\EmptyKeyException
+     */
+    public function decrypt($data);
     
 }

@@ -153,4 +153,11 @@ interface UserModelInterface extends KtogiasZendLibUserModelInterface{
      * @return boolean
      */
     public function verifyLdapPassword($password);
+    /**
+     * 
+     * @param string $password
+     * @return string
+     */
+    public function getKeyFromPassword($password);
+    
 }

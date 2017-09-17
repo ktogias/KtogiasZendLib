@@ -74,7 +74,7 @@ class UserModel extends KtogiasZendLibUserModel implements UserModelInterface{
             throw new Exception\EmptySaltException('Salt from config is empty!!!');
         }
         $select = $this->table->getTableGateway()->getSql()->select();
-        $select->where->equalTo('login_token', new \Zend\Db\Sql\Expression('sha1(concat("'.$salt.'","'.$token.'",salt))'));
+        $select->where->equalTo('login_token', new \Zend\Db\Sql\Expression('sha1(concat(?,?,salt))', [$salt, $token]));
         $modelObject = $this->table->fetchOne($select, true, true);
         $this->exchangeArray($modelObject->getArrayCopy());
         return $this;
@@ -366,6 +366,19 @@ class UserModel extends KtogiasZendLibUserModel implements UserModelInterface{
     /**
      * 
      * @param string $password
+     * @return string
+     */
+    public function getKeyFromPassword($password) {
+        $config = $this->serviceLocator->get('config');
+        $salt = $config['ktogias-login']['salt'];
+        $iterations = $config['ktogias-login']['iterations'];
+        $size = $config['ktogias-login']['keysize'];
+        return parent::getKey($password, $salt, $iterations, $size);
+    }
+    
+    /**
+     * 
+     * @param string $password
      * @return boolean
      */
     protected function setLdapPassword($password){
@@ -381,5 +394,7 @@ class UserModel extends KtogiasZendLibUserModel implements UserModelInterface{
             throw new Exception\LdapUserNotFoundException('Ldap user with mail='.$this->email.' not found!');
         }
     }
+    
+    
     
 }

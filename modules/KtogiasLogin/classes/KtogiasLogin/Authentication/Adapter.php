@@ -40,14 +40,14 @@ class Adapter implements AdapterInterface,  ServiceLocatorAwareInterface{
             try {
                 $user->loadUpdateCreateFromLdapByMailOrUid($this->username);
             } catch (\KtogiasZendLib\Application\User\Model\Exception\LdapUserNotFoundException $ex) {
-                $log->log('debug', get_class($this), 'authenticate', NULL, NULL, 'LdapUserNotFoundException', ['message' => $ex->getMessage(), 'trace' => $ex->getTrace(), 'class' => get_class($ex), 'user' => $user->getArrayCopy()]);
+                $log->log('debug', get_class($this), 'authenticate', NULL, NULL, 'LdapUserNotFoundException', ['message' => $ex->getMessage(), 'trace' => $ex->getTrace(), 'class' => get_class($ex), 'user' => $user->getSafeArrayCopy()]);
                 return new \Zend\Authentication\Result(\Zend\Authentication\Result::FAILURE, []);
             } catch (\KtogiasZendLib\Application\User\Model\Exception\RoleByLdapTitleNotFoundException $ex) {
-                $log->log('debug', get_class($this), 'authenticate', NULL, NULL, 'RoleByLdapTitleNotFoundException', ['message' => $ex->getMessage(), 'trace' => $ex->getTrace(), 'class' => get_class($ex), 'user' => $user->getArrayCopy()]);
+                $log->log('debug', get_class($this), 'authenticate', NULL, NULL, 'RoleByLdapTitleNotFoundException', ['message' => $ex->getMessage(), 'trace' => $ex->getTrace(), 'class' => get_class($ex), 'user' => $user->getSafeArrayCopy()]);
                 return new \Zend\Authentication\Result(\Zend\Authentication\Result::FAILURE, []);
             }
         } catch (\KtogiasZendLib\Application\User\Model\Exception\RoleByLdapTitleNotFoundException $ex) {
-            $log->log('debug', get_class($this), 'authenticate', NULL, NULL, 'RoleByLdapTitleNotFoundException', ['message' => $ex->getMessage(), 'trace' => $ex->getTrace(), 'class' => get_class($ex), 'user' => $user->getArrayCopy()]);
+            $log->log('debug', get_class($this), 'authenticate', NULL, NULL, 'RoleByLdapTitleNotFoundException', ['message' => $ex->getMessage(), 'trace' => $ex->getTrace(), 'class' => get_class($ex), 'user' => $user->getSafeArrayCopy()]);
             return new \Zend\Authentication\Result(\Zend\Authentication\Result::FAILURE, []);
         }
         try {
@@ -61,12 +61,12 @@ class Adapter implements AdapterInterface,  ServiceLocatorAwareInterface{
                 ]);
           }
           else {
-              $log->log('debug', get_class($this), 'authenticate', NULL, NULL, 'Not active or wrong password', ['user' => $user->getArrayCopy()]);
+              $log->log('debug', get_class($this), 'authenticate', NULL, NULL, 'Not active or wrong password', ['user' => $user->getSafeArrayCopy()]);
               return new \Zend\Authentication\Result(\Zend\Authentication\Result::FAILURE, []);
           }
         } 
         catch(\KtogiasZendLib\Db\Table\Exception\DbTableNoResultException $e){
-            $log->log('debug', get_class($this), 'authenticate', NULL, NULL, 'RoleByLdapTitleNotFoundException', ['message' => $e->getMessage(), 'trace' => $e->getTrace(), 'class' => get_class($e), 'user' => $user->getArrayCopy()]);
+            $log->log('debug', get_class($this), 'authenticate', NULL, NULL, 'RoleByLdapTitleNotFoundException', ['message' => $e->getMessage(), 'trace' => $e->getTrace(), 'class' => get_class($e), 'user' => $user->getSafeArrayCopy()]);
             return new \Zend\Authentication\Result(\Zend\Authentication\Result::FAILURE, []);
         } 
     }

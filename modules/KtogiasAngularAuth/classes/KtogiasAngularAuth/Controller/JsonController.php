@@ -27,7 +27,7 @@ class JsonController extends AuthController implements JsonControllerInterface{
             return ['identity' => NULL];
         }
         $user = $auth->getUser();
-        $identity = $user->getArrayCopy();
+        $identity = $user->getSafeArrayCopy();
         $identity['roles'] = [];
         foreach ($user->getRolesWithAntecedents() as $role){
             $identity['roles'][] = $role->getAlias();

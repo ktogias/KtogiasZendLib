@@ -167,12 +167,14 @@ class UserModel extends ReadOnlyDbTableModel implements UserModelInterface{
     
     private function validateIdentity($identity){
         $usernameValidator = new \Zend\Validator\StringLength(['min' => 4, 'max' => 100]);
-        $emailValidator = new \Zend\Validator\EmailAddress();
         if (!$usernameValidator->isValid($identity['user']['username'])){
             throw new Exception\InvalidUsernameException();
         }
-        if (!$emailValidator->isValid($identity['user']['email'])){
-            throw new Exception\InvalidEmailException();
+        if (!empty($identity['user']['email'])){
+            $emailValidator = new \Zend\Validator\EmailAddress();
+            if (!$emailValidator->isValid($identity['user']['email'])){
+                throw new Exception\InvalidEmailException();
+            }
         }
     }
     
@@ -379,18 +381,21 @@ class UserModel extends ReadOnlyDbTableModel implements UserModelInterface{
      * @param string $email
      * @param string $firstname
      * @param string $lastname
+     * @param boolean $skipEmailValidation default false
      * @return $this
      * @throws \KtogiasZendLib\Application\User\Model\Exception\InvalidEmailException
      * @throws \KtogiasZendLib\Application\User\Model\Exception\InvalidUsernameException
      * @throws \KtogiasZendLib\Application\User\Model\Exception\InvalidFirstnameException
      * @throws \KtogiasZendLib\Application\User\Model\Exception\InvalidLastnameException
      */
-    public function create($username, $email, $firstname, $lastname){
-        $emailValidator = new \Zend\Validator\EmailAddress();
-        $emailStrLenValidator = new \Zend\Validator\StringLength(array('min' => 1, 'max' => 100));
-        $emailRegexValidator = new \Zend\Validator\Regex(['pattern' => '/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/']);
-        if (!$emailValidator->isValid($email) || !$emailRegexValidator->isValid($email) || !$emailStrLenValidator->isValid($email)){
-            throw new \KtogiasZendLib\Application\User\Model\Exception\InvalidEmailException();
+    public function create($username, $email, $firstname, $lastname, $skipEmailValidation = false){
+        if (!$skipEmailValidation){
+            $emailValidator = new \Zend\Validator\EmailAddress();
+            $emailStrLenValidator = new \Zend\Validator\StringLength(array('min' => 1, 'max' => 100));
+            $emailRegexValidator = new \Zend\Validator\Regex(['pattern' => '/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/']);
+            if (!$emailValidator->isValid($email) || !$emailRegexValidator->isValid($email) || !$emailStrLenValidator->isValid($email)){
+                throw new \KtogiasZendLib\Application\User\Model\Exception\InvalidEmailException();
+            }
         }
         $usernameStrLenValidator = new \Zend\Validator\StringLength(array('min' => 1, 'max' => 100));
         $usernameRegexValidator = new \Zend\Validator\Regex(['pattern' => '/^[A-Za-z0-9_\-\.@]+$/']);
@@ -661,6 +666,49 @@ class UserModel extends ReadOnlyDbTableModel implements UserModelInterface{
         $modelObject = $this->table->fetchOne($select, true, true);
         $this->exchangeArray($modelObject->getArrayCopy());
         return $this;
+    }
+    
+    
+    /**
+     * 
+     * @param string $password
+     * @param string $salt
+     * @param integer $iterations
+     * @param integer $size
+     * @return string
+     */
+    public function getKey($password, $salt, $iterations, $size){
+        return hash_pbkdf2('sha256', $password, $this->salt.$salt, $iterations, $size);
+    }
+    
+    /**
+     * 
+     * @param string $data
+     * @param string $key
+     * @return string
+     * @throws Exception\EmptyKeyException
+     */
+    public function encrypt($data, $key){
+        if (empty($key)){
+            throw new Exception\EmptyKeyException();
+        }
+        $iv = openssl_random_pseudo_bytes(16);
+        return bin2hex($iv).openssl_encrypt($data, 'AES256', $key, 0, $iv);
+    }
+    
+    /**
+     * 
+     * @param string $data
+     * @param string $key
+     * @return string
+     * @throws Exception\EmptyKeyException
+     */
+    public function decrypt($data, $key){
+        if (empty($key)){
+            throw new Exception\EmptyKeyException();
+        }
+        $vi = hex2bin(substr($data, 0, 32)); 
+        return openssl_decrypt(substr($data, 32), 'AES256', $key, 0, $vi);
     }
 
 }
