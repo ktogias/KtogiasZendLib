@@ -1,3 +1,4 @@
+<div class="control-group form-group value-group {{groupClass}}" ng-class="{'inline': inline}">
 <!--
 /**
  * KtogiasZendLib (https://github.com/ktogias/KtogiasZendLib)
@@ -7,7 +8,6 @@
  * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
  */
 -->
-<div class="control-group form-group value-group {{groupClass}}" ng-class="{'inline': inline}">
         <label ng-hide="hideLabel" class="{{labelClass}}">{{label | translate}}</label>
         <div class="value {{valueClass}}" ng-class="{editable:(editable === 'true'), 'animate-show':(editable === 'true'), 'pending-edit': pendingEdit}" style="{{valueCtrl.val.style}}" ng-hide="valueCtrl.edit">
             <span class="value-content" ng-class="{'pending-edit': pendingEdit }">
