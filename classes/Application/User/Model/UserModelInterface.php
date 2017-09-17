@@ -231,17 +231,19 @@ interface UserModelInterface extends ReadOnlyDbTableModelInterface, LoggingAware
     /**
      * 
      * @param string $data
+     * @param string $key
      * @return string
      * @throws Exception\EmptyKeyException
      */
-    public function encrypt($data);
+    public function encrypt($data, $key);
     
     /**
      * 
      * @param string $data
+     * @param string $key
      * @return string
      * @throws Exception\EmptyKeyException
      */
-    public function decrypt($data);
+    public function decrypt($data, $key);
     
 }
