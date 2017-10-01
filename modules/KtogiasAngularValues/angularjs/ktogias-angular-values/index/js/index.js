@@ -93,7 +93,12 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
             uiSelectTagging: '=',
             uiSelectLimit: '@',
             editFileTypeDescription: '@',
-            editMinAllowedPasswordScore: '@'
+            editMinAllowedPasswordScore: '@',
+            showButton:'=',
+            showAction:'=',
+            passwordRepeatMatch:'=',
+            passwordRepeatMatchLabel:'@',
+            passwordRepeatMatchPlaceholder:'@'
         },
         templateUrl: 'values/value.phtml',
         replace: true,
@@ -247,6 +252,9 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
                                 }
                             }                       
                         }
+                        else if ($scope.valueType === 'password'){
+                            controller.editvalue = '';                   
+                        }
                         else if (controller.val){
                             controller.editvalue = controller.val.value;
                         }
@@ -313,7 +321,7 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
                     });
                 }
                 if ($scope.valueType === 'password'){
-                    $scope.$watch('valueCtrl.editvalue', function(newValue){
+                    $scope.$watch('valueCtrl.editvalue', function(newValue){ 
                         if (controller.editvalue && controller.editValueForm && controller.editControlName){
                             controller.checkPaswordStrength(newValue, function(){
                                 controller.editValueForm[controller.editControlName].$setValidity('passwordStrength', true);
@@ -521,6 +529,15 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
                         if ($scope.valueType === 'file'){
                             controller.editControlName = 'file';
                         }
+                        else if ($scope.valueType === 'password'){
+                            
+                            if ($scope.editControlName){
+                                controller.editControlName = $scope.editControlName;
+                            }
+                            else {
+                                controller.editControlName = null;
+                            }
+                        }
                         else {
                             controller.editControlName = null;
                         }
@@ -528,7 +545,24 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
                 });
             }
             
-            
+            if ($scope.showButton && $scope.showAction){
+                $scope.$watch('valueCtrl.show', function(newValue, oldValue) {
+                    if (newValue){
+                        $scope.showAction(function(value){
+                            controller.reallyShow = true;
+                            controller.val.value = value;
+                        },
+                        function(){
+                            controller.show = false;
+                            controller.reallyShow = false;
+                        });
+                    }
+                    else {
+                        controller.reallyShow = false;
+                        controller.val.value = '&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;';
+                    }
+                });
+            }
             
         }]
     };

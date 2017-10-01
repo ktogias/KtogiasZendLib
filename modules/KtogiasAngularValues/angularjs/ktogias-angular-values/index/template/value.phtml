@@ -11,8 +11,9 @@
         <label ng-hide="hideLabel" class="{{labelClass}}">{{label | translate}}</label>
         <div class="value {{valueClass}}" ng-class="{editable:(editable === 'true'), 'animate-show':(editable === 'true'), 'pending-edit': pendingEdit}" style="{{valueCtrl.val.style}}" ng-hide="valueCtrl.edit">
             <span class="value-content" ng-class="{'pending-edit': pendingEdit }">
-                <span ng-if="valueType !== 'file'" ng-include="'values/display-text.phtml'"></span>
+                <span ng-if="valueType !== 'file' && valueType !== 'password'" ng-include="'values/display-text.phtml'"></span>
                 <span ng-if="valueType === 'file'" ng-include="'values/display-file.phtml'"></span>
+                <span ng-if="valueType === 'password'" ng-include="'values/display-password.phtml'"></span>
             </span>
             
             <span ng-if="pendingEdit" 
