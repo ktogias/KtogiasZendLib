@@ -44,6 +44,7 @@ class IndexController extends Controller implements AngularJsControllerInterface
                 'values/edit-email.phtml' => 'edit-email.phtml',
                 'values/display-text.phtml' => 'display-text.phtml',
                 'values/display-file.phtml' => 'display-file.phtml',
+                'values/display-password.phtml' => 'display-password.phtml',
             ],
             'config' => [
                 'min-allowed-password-score' => $minAllowedPasswordScore,
