@@ -85,5 +85,18 @@ abstract class DbTableModel extends ReadOnlyDbTableModel implements DbTableModel
         }
     }
     
+    /**
+     * 
+     * @param object or array $data
+     * @return \KtogiasZendLib\Model\ValidatingDbTableModelInterface
+     */
+    public function merge($data){
+        if (is_object($data)){
+            $data = (array)$data;
+        }
+        $mergedData = array_merge($this->getArrayCopy(), $data);
+        $this->exchangeArray($mergedData);
+        return $this;
+    }
     
 }

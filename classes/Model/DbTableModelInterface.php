@@ -43,4 +43,11 @@ interface DbTableModelInterface extends ReadOnlyDbTableModelInterface{
      * 
      */
     public function delete();
+    
+    /**
+     * 
+     * @param object or array $data
+     * @return \KtogiasZendLib\Model\ValidatingDbTableModelInterface
+     */
+    public function merge($data);
 }

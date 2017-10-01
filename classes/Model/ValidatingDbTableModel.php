@@ -63,5 +63,24 @@ abstract class ValidatingDbTableModel extends DbTableModel implements Validating
         $this->validate($data)->exchangeArray($data);
         return $this;
     }
+    
+    /**
+     * 
+     * @param object or array $data
+     * @return \KtogiasZendLib\Model\ValidatingDbTableModelInterface
+     */
+    public function merge($data){
+        if (is_object($data)){
+            $data = (array)$data;
+        }
+        foreach (array_keys($data) as $field){
+            if (!in_array($field, $this->fields)){
+                throw new Exception\ValidatingDbTableModelFieldNotExistsException($field);
+            }
+        }
+        $mergedData = array_merge($this->getArrayCopy(), $data);
+        $this->validate($mergedData)->exchangeArray($mergedData);
+        return $this;
+    }
 
 }
