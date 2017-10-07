@@ -185,4 +185,17 @@ abstract class ReadOnlyDbTableModel implements ReadOnlyDbTableModelInterface{
     public function clearCache() {
         return $this;
     }
+    
+    /**
+     * 
+     * @param array $expand
+     * @throws \KtogiasZendLib\Model\Exception\DbTableModelExpansionException
+     * @return array
+     */
+    public function getArrayCopyExpanded(array $expand) {
+       if (!empty($expand)){
+            throw new Exception\DbTableModelExpansionException('Unable to expand '.json_encode($expand));
+       }
+       return $this->getArrayCopy();
+    }
 }
