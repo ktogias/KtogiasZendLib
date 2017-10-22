@@ -25,9 +25,9 @@
     <div class="panel-body">
          <form name="loginForm" role="form">
             <div class="control-group form-group" ng-class="{error: loginForm.username.$invalid && !loginForm.username.$pristine}">
-                <label for="loginForm-username">{{'Email ή όνομα χρήστη'| translate}}</label>
+                <label for="loginForm-username">{{'Όνομα χρήστη'| translate}}</label>
                 <input class="form-control" id="applicationForm-username" type="text" name="username" 
-                       placeholder="{{'Εισάγετε το email σας ή το όνομα χρήστη (έως 100 χαρακτήρες)'|translate}}" 
+                       placeholder="{{'Εισάγετε το όνομα χρήστη'|translate}}" 
                        ng-model="controller.username"  
                        required minlength="1" maxlength="100"/>
                 <span ng-show="loginForm.username.$error.required && !loginForm.username.$pristine" class="help-block">
@@ -40,7 +40,7 @@
              <div class="control-group form-group" ng-class="{error: loginForm.password.$invalid && !loginForm.password.$pristine}">
                 <label for="loginForm-password">{{'Κωδικός πρόσβασης'|translate}}</label>
                 <input class="form-control" id="applicationForm-password" type="password" name="password" 
-                       placeholder="{{'Εισάγετε τον κωδικό πρόσβασης (έως 100 χαρακτήρες)'|translate}}" 
+                       placeholder="{{'Εισάγετε τον κωδικό πρόσβασης'|translate}}" 
                        ng-model="controller.password"  
                        required minlength="1" maxlength="100"/>
                 <span ng-show="loginForm.password.$error.required && !loginForm.password.$pristine" class="help-block">
