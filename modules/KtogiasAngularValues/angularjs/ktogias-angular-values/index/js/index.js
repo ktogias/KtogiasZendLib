@@ -98,7 +98,10 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
             showAction:'=',
             passwordRepeatMatch:'=',
             passwordRepeatMatchLabel:'@',
-            passwordRepeatMatchPlaceholder:'@'
+            passwordRepeatMatchPlaceholder:'@',
+            clickable:'=',
+            clickAction:'=',
+            clickArg:'='
         },
         templateUrl: 'values/value.phtml',
         replace: true,
@@ -107,6 +110,10 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
             var controller = this;
             
             controller.angular = angular;
+            
+            controller.callAction = function(action, arg){
+                action.call({},arg);
+            };
             
             if ($rootScope.lang){
                 $scope.lang = $rootScope.lang;
