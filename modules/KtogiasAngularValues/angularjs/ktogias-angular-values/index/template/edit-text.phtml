@@ -19,6 +19,7 @@
             ng-pattern="valueCtrl.editPattern"
             minlength="{{editMinlength}}" 
             maxlength="{{editMaxlength}}"
+            ng-disabled="editDisabled"
             ng-required="editRequired"/>
         <input 
             ng-if="editMatch"
@@ -31,6 +32,7 @@
             minlength="{{editMinlength}}" 
             maxlength="{{editMaxlength}}"
             ng-required="editRequired"
+            ng-disabled="editDisabled"
             match="valueCtrl.editMatch"/>
     </div>
     <span ng-if="!editForm" ng-include="'values/edit-buttons.phtml'"></span>
