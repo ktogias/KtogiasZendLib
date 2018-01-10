@@ -101,7 +101,8 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
             passwordRepeatMatchPlaceholder:'@',
             clickable:'=',
             clickAction:'=',
-            clickArg:'='
+            clickArg:'=',
+            textDisplayFilter:'='
         },
         templateUrl: 'values/value.phtml',
         replace: true,
@@ -120,6 +121,13 @@ angular.module('values', ['ui.bootstrap','ngAnimate', 'ngFileUpload', 'validatio
             }
             else {
                 $scope.lang = 'el';
+            }
+            
+            if (typeof $scope.textDisplayFilter === 'function'){
+                controller.textDisplayFilter = $scope.textDisplayFilter;
+            }
+            else {
+                controller.textDisplayFilter = function(value){return value;};
             }
             
             if ($scope.valueType === 'date'){

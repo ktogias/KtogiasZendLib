@@ -7,7 +7,7 @@
  * @license   https://raw.githubusercontent.com/ktogias/KtogiasZendLib/master/LICENSE New BSD License
  */
 -->
-<span ng-if="!clickable" ng-bind-html="valueCtrl.val.value | translate"></span>
+<span ng-if="!clickable" ng-bind-html="valueCtrl.textDisplayFilter(valueCtrl.val.value) | translate"></span>
 <a ng-if="clickable" class="clickable" ng-click="valueCtrl.callAction(clickAction,clickArg)">
-    <span ng-bind-html="valueCtrl.val.value | translate"></span>
+    <span ng-bind-html="valueCtrl.textDisplayFilter(valueCtrl.val.value) | translate"></span>
 </a>
